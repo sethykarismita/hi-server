@@ -5,7 +5,7 @@ const express = require('express')
 const uploadImageCloudinary = require("./file")
 const app = express()
 const cors = require('cors')
-app.use(cors({origin:['https://hi-messanger.netlify.app','http://localhost:5173']}))
+app.use(cors({origin:['https://hi-messanger.netlify.app','http://localhost:5173','https://n0wdj8fl-5173.inc1.devtunnels.ms']}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 const path = require('path');
