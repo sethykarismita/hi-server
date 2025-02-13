@@ -200,13 +200,35 @@ io.on('connection', (socket) => {
 
     mongoClient.connect(conStr).then((clientObject) => {
         const db = clientObject.db('chatapp')
+        
         //add chat
         app.post('/chat', (req, res) => {
-            db.collection('chats').insertOne(req.body).then(() => {
-                //send chat to receiver
-                io.to(req.body.p2).emit('message', req.body);
-                res.send(req.body); res.end()
-            })
+             if(req.body.file){
+                const resources = './uploads/pics/'+ req.body.file
+                const picname = req.body.file
+                uploadImageCloudinary(resources,picname).then(async(data)=>{
+                    var body={
+                        p1:req.body.p1,
+                        p2:req.body.p2,
+                        smg:req.body.msg,
+                        file:data.url
+                    }
+                    db.collection('chats').insertOne(body).then(() => {
+                        //send chat to receiver
+                        io.to(req.body.p2).emit('message', req.body);
+                        res.send(req.body); res.end()
+                    })
+                })
+                
+            }
+            else{
+                db.collection('chats').insertOne(req.body).then(() => {
+                    //send chat to receiver
+                    io.to(req.body.p2).emit('message', req.body);
+                    res.send(req.body); res.end()
+                })
+            }
+           
         });
     })
 
