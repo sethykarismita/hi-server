@@ -215,8 +215,8 @@ io.on('connection', (socket) => {
                     }
                     db.collection('chats').insertOne(body).then(() => {
                         //send chat to receiver
-                        io.to(req.body.p2).emit('message', req.body);
-                        res.send(req.body); res.end()
+                        io.to(req.body.p2).emit('message', body);
+                        res.send(body); res.end()
                     })
                 })
                 
